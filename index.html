@@ -278,7 +278,7 @@ const DashboardView=()=>{
 
 /* ─── MAIN APP ─────────────────────────────────────────────── */
 function App(){
-  const[view,setView]=useState("edit");
+  const[view,setView]=useState("tokens");
   const views=[{id:"tokens",label:"Tokens & States"},{id:"dashboard",label:"Dashboard"},{id:"edit",label:"Volunteer Edit"}];
   return(<div style={{fontFamily:"var(--font-body)",background:"#FAFAFA",minHeight:"100vh",display:"flex",flexDirection:"column"}}>
     <header style={{background:"#171717",padding:"10px 24px",display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0,borderBottom:"1px solid rgba(255,255,255,0.06)"}}>
@@ -287,7 +287,7 @@ function App(){
         <div style={{height:24,width:1,background:"rgba(255,255,255,0.1)"}}/>
         <nav style={{display:"flex",gap:"2px"}} role="tablist">{views.map(v=>(<button key={v.id} role="tab" aria-selected={view===v.id} onClick={()=>setView(v.id)} style={{padding:"7px 16px",borderRadius:"var(--radius-lg)",border:"none",background:view===v.id?"rgba(249,115,22,0.15)":"transparent",color:view===v.id?"#FB923C":"rgba(255,255,255,0.4)",fontSize:"0.8125rem",fontWeight:view===v.id?600:400,cursor:"pointer",fontFamily:"var(--font-body)",transition:"all var(--transition)"}}>{v.label}</button>))}</nav>
       </div>
-      <div style={{display:"flex",alignItems:"center",gap:"8px"}}><Badge variant="primary">Shadcn/ui</Badge><Badge variant="info">WCAG AA</Badge><Badge variant="teal">PrimeVue</Badge></div>
+      <div style={{display:"flex",alignItems:"center",gap:"8px"}}><Badge variant="primary">React</Badge><Badge variant="info">WCAG AA</Badge><Badge variant="teal">Token-Based</Badge></div>
     </header>
     <div style={{flex:1,overflow:"auto"}}>
       {view==="tokens"&&<div style={{maxWidth:900,margin:"0 auto",padding:"32px 24px"}}><h1 style={{fontFamily:"var(--font-display)",fontSize:"1.75rem",fontWeight:800,color:"#171717",letterSpacing:"-0.03em",marginBottom:"6px"}}>Tokens, Badges & Interactive States</h1><p style={{fontSize:"0.9375rem",color:"#737373",marginBottom:"32px",lineHeight:1.6}}>Foundational visual language with WCAG AA compliance. Bold badge styling matches SmartPass patterns — saturated backgrounds with white text. All interactive elements include visible focus indicators, error states, and disabled treatments.</p><TokensView/></div>}
