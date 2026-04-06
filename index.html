@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Raptor Design System v1.1</title>
+  <title>Raptor Design System v1.2</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23F97316'/><text x='50%25' y='55%25' dominant-baseline='middle' text-anchor='middle' font-size='18' font-weight='800' fill='white' font-family='system-ui'>R</text></svg>" />
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
@@ -18,9 +18,12 @@
       --neutral-400:#A3A3A3;--neutral-500:#737373;--neutral-600:#525252;--neutral-700:#404040;
       --neutral-800:#262626;--neutral-900:#171717;
       --success-500:#16A34A;--danger-500:#DC2626;--warning-500:#D97706;--info-500:#2563EB;
-      --radius-sm:0.375rem;--radius-md:0.625rem;--radius-lg:0.875rem;--radius-xl:1.125rem;--radius-2xl:1.5rem;
-      --shadow-sm:0 1px 2px rgba(0,0,0,0.06);
+      --navy:#1E293B;--navy-deep:#0F172A;
+      --radius-sm:0.375rem;--radius-md:0.625rem;--radius-lg:0.875rem;--radius-xl:1.125rem;--radius-2xl:1.5rem;--radius-pill:9999px;
+      --shadow-sm:0 1px 2px rgba(0,0,0,0.04);
       --shadow-md:0 4px 12px -2px rgba(0,0,0,0.08),0 2px 4px -2px rgba(0,0,0,0.04);
+      --shadow-card:0 2px 12px rgba(0,0,0,0.06),0 1px 3px rgba(0,0,0,0.03);
+      --shadow-card-hover:0 4px 20px rgba(0,0,0,0.08),0 2px 6px rgba(0,0,0,0.04);
       --shadow-focus:0 0 0 3px rgba(249,115,22,0.25);
       --shadow-focus-danger:0 0 0 3px rgba(220,38,38,0.25);
       --font-body:'DM Sans',system-ui,sans-serif;
@@ -36,21 +39,17 @@
 </head>
 <body>
 <div id="root"></div>
-
-<script data-goatcounter="https://arrington.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
-
 <script type="text/babel">
 const { useState } = React;
 
 /* ─── ICONS ────────────────────────────────────────────────── */
 const I = {
-  Dashboard:()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>,
-  Users:()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
-  Calendar:()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>,
-  Clipboard:()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>,
-  Chart:()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>,
-  Help:()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
+  Dashboard:()=><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>,
+  Users:()=><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>,
+  Calendar:()=><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>,
+  Clipboard:()=><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="m9 14 2 2 4-4"/></svg>,
+  Chart:()=><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>,
+  Help:()=><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
   Alert:()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>,
   Bell:()=><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>,
   ChevDown:()=><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"/></svg>,
@@ -65,6 +64,7 @@ const I = {
   Shield:()=><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 11 14 15 10"/></svg>,
   Camera:()=><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>,
   Undo:()=><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>,
+  Search:()=><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>,
 };
 
 /* ─── BADGE ────────────────────────────────────────────────── */
@@ -74,10 +74,10 @@ const Badge=({children,variant="default",size="sm"})=>{const v=badgeColors[varia
 /* ─── BUTTON ───────────────────────────────────────────────── */
 const Button=({children,variant="primary",size="md",icon,onClick,style:xs,disabled})=>{
   const[h,setH]=useState(false);
-  const vs={primary:{bg:h?"#EA580C":"#F97316",c:"#fff",b:"none"},secondary:{bg:h?"#F5F5F5":"#fff",c:"#404040",b:"1px solid #D4D4D4"},danger:{bg:h?"#B91C1C":"#DC2626",c:"#fff",b:"none"},ghost:{bg:h?"#F5F5F5":"transparent",c:"#525252",b:"none"},outline:{bg:h?"#FFF7ED":"transparent",c:"#EA580C",b:"2px solid #FB923C"},success:{bg:h?"#15803D":"#16A34A",c:"#fff",b:"none"}};
+  const vs={primary:{bg:h?"#EA580C":"#F97316",c:"#fff",b:"none"},secondary:{bg:h?"#E5E5E5":"#F0F0F0",c:"#404040",b:"none"},danger:{bg:h?"#B91C1C":"#DC2626",c:"#fff",b:"none"},ghost:{bg:h?"#EBEBEB":"#F0F0F0",c:"#525252",b:"none"},outline:{bg:h?"#FFF7ED":"transparent",c:"#EA580C",b:"2px solid #FB923C"},success:{bg:h?"#15803D":"#16A34A",c:"#fff",b:"none"}};
   const sz={sm:{p:"6px 12px",f:"0.8125rem"},md:{p:"9px 18px",f:"0.875rem"},lg:{p:"11px 22px",f:"0.9375rem"}};
   const v=vs[variant]||vs.primary;const s=sz[size]||sz.md;
-  return(<button onClick={onClick} disabled={disabled} onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)} style={{background:disabled?"#E5E5E5":v.bg,color:disabled?"#A3A3A3":v.c,border:v.b,padding:s.p,fontSize:s.f,display:"inline-flex",alignItems:"center",gap:"7px",borderRadius:"var(--radius-lg)",fontWeight:600,fontFamily:"var(--font-body)",cursor:disabled?"not-allowed":"pointer",transition:"all var(--transition)",letterSpacing:"-0.01em",lineHeight:1.4,opacity:disabled?0.6:1,...xs}}>{icon}{children}</button>);
+  return(<button onClick={onClick} disabled={disabled} onMouseEnter={()=>setH(true)} onMouseLeave={()=>setH(false)} style={{background:disabled?"#E5E5E5":v.bg,color:disabled?"#A3A3A3":v.c,border:v.b,padding:s.p,fontSize:s.f,display:"inline-flex",alignItems:"center",gap:"7px",borderRadius:"var(--radius-md)",fontWeight:600,fontFamily:"var(--font-body)",cursor:disabled?"not-allowed":"pointer",transition:"all var(--transition)",letterSpacing:"-0.01em",lineHeight:1.4,opacity:disabled?0.6:1,...xs}}>{icon}{children}</button>);
 };
 
 /* ─── FORM FIELD ───────────────────────────────────────────── */
@@ -108,41 +108,69 @@ const FormSelect=({label,required,value,onChange,options=[],disabled})=>{
 };
 
 /* ─── STAT CARD ────────────────────────────────────────────── */
-const StatCard=({label,value,change,icon,accent="#F97316"})=>(<div style={{background:"#fff",borderRadius:"var(--radius-xl)",padding:"20px",border:"1px solid #E5E5E5",display:"flex",flexDirection:"column",gap:"10px",flex:1,minWidth:0}}>
+const StatCard=({label,value,change,icon,accent="#F97316"})=>(<div style={{background:"#fff",borderRadius:"var(--radius-xl)",padding:"20px",border:"none",display:"flex",flexDirection:"column",gap:"10px",flex:1,minWidth:0}}>
   <div style={{display:"flex",justifyContent:"space-between",alignItems:"flex-start"}}>
     <span style={{fontSize:"0.8125rem",color:"#737373",fontWeight:500,fontFamily:"var(--font-body)"}}>{label}</span>
     <div style={{width:34,height:34,borderRadius:"var(--radius-lg)",background:accent,display:"flex",alignItems:"center",justifyContent:"center",color:"#fff"}}>{icon}</div>
   </div>
   <div style={{display:"flex",alignItems:"baseline",gap:"8px"}}>
-    <span style={{fontSize:"1.75rem",fontWeight:800,fontFamily:"var(--font-display)",color:"#171717",letterSpacing:"-0.03em",lineHeight:1}}>{value}</span>
+    <span style={{fontSize:"1.75rem",fontWeight:800,fontFamily:"var(--font-display)",color:"var(--navy-deep)",letterSpacing:"-0.03em",lineHeight:1}}>{value}</span>
     {change!=null&&<Badge variant={change>0?"success":"danger"} size="sm">{change>0?"+":""}{change}%</Badge>}
   </div>
 </div>);
 
-/* ─── SIDEBAR ──────────────────────────────────────────────── */
-const Sidebar=({active,onNav})=>(<div style={{width:240,background:"#171717",display:"flex",flexDirection:"column",flexShrink:0}}>
-  <div style={{padding:"20px 20px 20px",borderBottom:"1px solid rgba(255,255,255,0.08)"}}>
-    <span style={{fontFamily:"var(--font-display)",fontSize:"1.25rem",fontWeight:800,color:"#F97316",letterSpacing:"-0.03em"}}>RAPTOR</span>
-    <span style={{fontSize:"0.5625rem",color:"rgba(255,255,255,0.35)",display:"block",letterSpacing:"0.12em",fontWeight:500,marginTop:"2px",textTransform:"uppercase"}}>Technologies</span>
+/* ─── TOP NAV (SmartPass pattern) ─────────────────────────── */
+const AppNav=({active,onNav,onSearch})=>(
+  <div style={{background:"#fff",boxShadow:"0 2px 8px rgba(0,0,0,0.06)",flexShrink:0}}>
+    <div style={{display:"flex",alignItems:"center",padding:"12px 24px",gap:"16px"}}>
+      {/* Logo */}
+      <div style={{display:"flex",alignItems:"center",gap:"10px",marginRight:"8px"}}>
+        <div style={{width:36,height:36,borderRadius:"50%",background:"#F97316",display:"flex",alignItems:"center",justifyContent:"center"}}>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
+        </div>
+      </div>
+      {/* Search — pill shaped */}
+      <div style={{position:"relative",flex:"0 1 320px"}}>
+        <div style={{position:"absolute",left:14,top:"50%",transform:"translateY(-50%)",color:"#A3A3A3"}}><I.Search/></div>
+        <input type="text" placeholder="Search volunteers..." style={{width:"100%",padding:"9px 16px 9px 38px",borderRadius:"var(--radius-pill)",border:"none",fontSize:"0.875rem",fontFamily:"var(--font-body)",color:"#171717",background:"#F0F0F0",outline:"none",transition:"all var(--transition)"}}/>
+      </div>
+      {/* Nav items — icon above label, SmartPass style */}
+      <nav style={{display:"flex",gap:"0",marginLeft:"auto"}} role="navigation" aria-label="Main navigation">
+        {[
+          {id:"dashboard",icon:<I.Dashboard/>,label:"Dashboard"},
+          {id:"volunteers",icon:<I.Users/>,label:"Volunteers"},
+          {id:"events",icon:<I.Calendar/>,label:"Events"},
+          {id:"approval",icon:<I.Clipboard/>,label:"Approvals"},
+          {id:"reports",icon:<I.Chart/>,label:"Reports"},
+        ].map(item=>(
+          <button key={item.id} onClick={()=>onNav&&onNav(item.id)} aria-current={active===item.id?"page":undefined}
+            style={{display:"flex",flexDirection:"column",alignItems:"center",gap:"3px",padding:"6px 20px 10px",border:"none",cursor:"pointer",background:"transparent",
+              color:active===item.id?"#F97316":"#737373",
+              fontFamily:"var(--font-body)",fontSize:"0.75rem",fontWeight:active===item.id?600:500,
+              transition:"all var(--transition)",position:"relative",
+              borderBottom:active===item.id?"2.5px solid #F97316":"2.5px solid transparent",marginBottom:"-2px"}}>
+            {item.icon}
+            {item.label}
+            {item.id==="approval"&&<span style={{position:"absolute",top:2,right:10,background:"#DC2626",color:"#fff",fontSize:"0.5625rem",fontWeight:700,padding:"1px 5px",borderRadius:"9999px",lineHeight:1.4}}>15</span>}
+          </button>
+        ))}
+      </nav>
+      {/* Right actions */}
+      <div style={{display:"flex",alignItems:"center",gap:"12px",marginLeft:"16px"}}>
+        <button aria-label="Emergency" style={{padding:"7px 14px",background:"#DC2626",color:"#fff",border:"none",borderRadius:"var(--radius-lg)",fontSize:"0.75rem",fontWeight:700,cursor:"pointer",fontFamily:"var(--font-body)",display:"flex",alignItems:"center",gap:"5px",letterSpacing:"0.02em"}}><I.Alert/> EMERGENCY</button>
+        <button aria-label="Notifications" style={{position:"relative",cursor:"pointer",color:"#525252",background:"none",border:"none",padding:"4px"}}>
+          <I.Bell/><div style={{position:"absolute",top:0,right:0,width:9,height:9,borderRadius:"50%",background:"#DC2626",border:"2px solid #fff"}}/>
+        </button>
+        <div style={{width:34,height:34,borderRadius:"50%",background:"linear-gradient(135deg,#FB923C,#EA580C)",display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:"0.8125rem",fontWeight:700,fontFamily:"var(--font-display)",cursor:"pointer"}}>CL</div>
+      </div>
+    </div>
   </div>
-  <div style={{padding:"16px 12px 6px",fontSize:"0.6875rem",color:"rgba(255,255,255,0.3)",fontWeight:600,letterSpacing:"0.08em",textTransform:"uppercase"}}>Volunteer Management</div>
-  <nav style={{padding:"0 8px",display:"flex",flexDirection:"column",gap:"2px"}} role="navigation" aria-label="Main navigation">
-    {[{id:"dashboard",icon:<I.Dashboard/>,label:"Dashboard"},{id:"volunteers",icon:<I.Users/>,label:"Volunteers"},{id:"events",icon:<I.Calendar/>,label:"Events"},{id:"approval",icon:<I.Clipboard/>,label:"Approval Queue",badge:15},{id:"reports",icon:<I.Chart/>,label:"Reports"},{id:"support",icon:<I.Help/>,label:"Support"}].map(item=>(
-      <button key={item.id} onClick={()=>onNav&&onNav(item.id)} aria-current={active===item.id?"page":undefined} style={{display:"flex",alignItems:"center",gap:"10px",padding:"10px 12px",borderRadius:"var(--radius-lg)",border:"none",cursor:"pointer",background:active===item.id?"rgba(249,115,22,0.14)":"transparent",color:active===item.id?"#FB923C":"rgba(255,255,255,0.5)",fontSize:"0.875rem",fontWeight:active===item.id?600:400,fontFamily:"var(--font-body)",transition:"all var(--transition)",textAlign:"left",width:"100%"}}>
-        {item.icon}{item.label}
-        {item.badge&&<span style={{marginLeft:"auto",background:"#DC2626",color:"#fff",fontSize:"0.6875rem",fontWeight:700,padding:"1px 8px",borderRadius:"9999px",minWidth:22,textAlign:"center"}}>{item.badge}</span>}
-      </button>
-    ))}
-  </nav>
-  <div style={{marginTop:"auto",padding:"16px 12px",borderTop:"1px solid rgba(255,255,255,0.06)"}}>
-    <button style={{display:"flex",alignItems:"center",gap:"8px",width:"100%",padding:"10px 12px",background:"rgba(220,38,38,0.12)",border:"1.5px solid rgba(220,38,38,0.25)",borderRadius:"var(--radius-lg)",color:"#EF4444",fontSize:"0.8125rem",fontWeight:700,cursor:"pointer",fontFamily:"var(--font-body)",justifyContent:"center",letterSpacing:"0.02em"}}><I.Alert/> EMERGENCY</button>
-  </div>
-</div>);
+);
 
-/* ─── TOPBAR ───────────────────────────────────────────────── */
-const Topbar=({breadcrumb,actions})=>(<div style={{display:"flex",alignItems:"center",padding:"10px 24px",borderBottom:"1px solid #E5E5E5",background:"#fff",flexShrink:0,minHeight:52}}>
+/* ─── BREADCRUMB BAR ───────────────────────────────────────── */
+const BreadcrumbBar=({items,actions})=>(<div style={{display:"flex",alignItems:"center",padding:"10px 24px",background:"#fff",boxShadow:"0 1px 4px rgba(0,0,0,0.04)",minHeight:48}}>
   <nav aria-label="Breadcrumb" style={{display:"flex",alignItems:"center",gap:"6px",fontSize:"0.8125rem",fontFamily:"var(--font-body)"}}>
-    {breadcrumb&&breadcrumb.map((b,i)=>(<span key={i} style={{display:"flex",alignItems:"center",gap:"6px"}}>{i>0&&<span style={{color:"#D4D4D4"}} aria-hidden="true">/</span>}<span style={{color:i===breadcrumb.length-1?"#171717":"#737373",fontWeight:i===breadcrumb.length-1?600:400,cursor:i<breadcrumb.length-1?"pointer":"default"}}>{b}</span></span>))}
+    {items&&items.map((b,i)=>(<span key={i} style={{display:"flex",alignItems:"center",gap:"6px"}}>{i>0&&<span style={{color:"#D4D4D4"}} aria-hidden="true">/</span>}<span style={{color:i===items.length-1?"var(--navy-deep)":"#737373",fontWeight:i===items.length-1?600:400}}>{b}</span></span>))}
   </nav>
   <div style={{marginLeft:"auto",display:"flex",gap:"8px",alignItems:"center"}}>{actions}</div>
 </div>);
@@ -157,12 +185,12 @@ const TokensView=()=>{
   ];
   return(<div style={{display:"flex",flexDirection:"column",gap:"32px"}}>
     <section>
-      <h3 style={{fontFamily:"var(--font-display)",fontSize:"1.125rem",fontWeight:700,color:"#171717",marginBottom:"16px"}}>Color Palette</h3>
+      <h3 style={{fontFamily:"var(--font-display)",fontSize:"1.125rem",fontWeight:700,color:"var(--navy-deep)",marginBottom:"16px"}}>Color Palette</h3>
       {palettes.map(p=>(<div key={p.name} style={{marginBottom:"20px"}}><span style={{fontSize:"0.8125rem",fontWeight:600,color:"#525252",display:"block",marginBottom:"8px"}}>{p.name}</span><div style={{display:"flex",gap:"6px",flexWrap:"wrap"}}>{p.shades.map(([name,hex])=>(<div key={name} style={{display:"flex",flexDirection:"column",alignItems:"center",gap:"4px"}}><div style={{width:54,height:42,background:hex,borderRadius:"var(--radius-md)",border:"1px solid rgba(0,0,0,0.06)",boxShadow:"var(--shadow-sm)"}}/><span style={{fontSize:"0.625rem",color:"#737373",fontFamily:"var(--font-body)",fontWeight:500}}>{name}</span><span style={{fontSize:"0.5625rem",color:"#A3A3A3",fontFamily:"monospace"}}>{hex}</span></div>))}</div></div>))}
     </section>
     <section>
-      <h3 style={{fontFamily:"var(--font-display)",fontSize:"1.125rem",fontWeight:700,color:"#171717",marginBottom:"16px"}}>Badges — Bold Style</h3>
-      <div style={{background:"#fff",padding:"24px",borderRadius:"var(--radius-xl)",border:"1px solid #E5E5E5"}}>
+      <h3 style={{fontFamily:"var(--font-display)",fontSize:"1.125rem",fontWeight:700,color:"var(--navy-deep)",marginBottom:"16px"}}>Badges — Bold Style</h3>
+      <div style={{background:"#fff",padding:"24px",borderRadius:"var(--radius-xl)",border:"none",boxShadow:"var(--shadow-card)"}}>
         <p style={{fontSize:"0.8125rem",color:"#737373",marginBottom:"16px",lineHeight:1.5}}>SmartPass-style saturated backgrounds with white text. All combos meet WCAG AA for bold text (≥ 3:1 contrast ratio, 600 weight).</p>
         <div style={{display:"flex",gap:"10px",flexWrap:"wrap",marginBottom:"16px"}}>
           <Badge variant="success"><I.Check/> Approved</Badge><Badge variant="primary"><I.Clock/> Pending</Badge><Badge variant="danger"><I.X/> Denied</Badge><Badge variant="warning"><I.Alert/> Expiring</Badge><Badge variant="info"><I.Shield/> Background Check</Badge><Badge variant="navy">Main Office</Badge><Badge variant="magenta">Nurse</Badge><Badge variant="teal">Library</Badge>
@@ -171,8 +199,8 @@ const TokensView=()=>{
       </div>
     </section>
     <section>
-      <h3 style={{fontFamily:"var(--font-display)",fontSize:"1.125rem",fontWeight:700,color:"#171717",marginBottom:"16px"}}>Interactive States</h3>
-      <div style={{background:"#fff",padding:"24px",borderRadius:"var(--radius-xl)",border:"1px solid #E5E5E5",display:"flex",flexDirection:"column",gap:"20px"}}>
+      <h3 style={{fontFamily:"var(--font-display)",fontSize:"1.125rem",fontWeight:700,color:"var(--navy-deep)",marginBottom:"16px"}}>Interactive States</h3>
+      <div style={{background:"#fff",padding:"24px",borderRadius:"var(--radius-xl)",border:"none",display:"flex",flexDirection:"column",gap:"20px"}}>
         <div><span style={{fontSize:"0.8125rem",fontWeight:600,color:"#525252",display:"block",marginBottom:"10px"}}>Buttons — hover to see state change</span>
           <div style={{display:"flex",gap:"10px",flexWrap:"wrap",alignItems:"center"}}><Button variant="primary" icon={<I.Save/>}>Save Changes</Button><Button variant="success" icon={<I.Check/>}>Approve</Button><Button variant="secondary" icon={<I.Undo/>}>Cancel</Button><Button variant="danger" icon={<I.X/>}>Deny</Button><Button variant="outline">Outline</Button><Button variant="ghost">Ghost</Button><Button variant="primary" disabled>Disabled</Button></div>
         </div>
@@ -186,7 +214,7 @@ const TokensView=()=>{
 };
 
 /* ─── VOLUNTEER EDIT VIEW ──────────────────────────────────── */
-const VolunteerEditView=()=>{
+const VolunteerEditView=({onNav})=>{
   const[editing,setEditing]=useState(true);
   const[saved,setSaved]=useState(false);
   const[form,setForm]=useState({firstName:"Patricia",middleName:"",lastName:"Kelley",dob:"11/14/1960",phone:"(555) 867-5309",email:"p.kelley@email.com",gender:"Female",affiliation:"Parent",idType:"Driver's License",building:"Lincoln Elementary",address1:"1247 Oak Valley Dr",address2:"",city:"Falls Church",state:"Virginia",zip:"22046"});
@@ -195,62 +223,60 @@ const VolunteerEditView=()=>{
   const validate=()=>{const e={};if(!form.firstName.trim())e.firstName="First name is required";if(!form.lastName.trim())e.lastName="Last name is required";if(!form.dob.trim())e.dob="Date of birth is required";if(!form.phone.trim())e.phone="Phone number is required";if(!form.email.trim())e.email="Email is required";else if(!/\S+@\S+\.\S+/.test(form.email))e.email="Enter a valid email address";setErrors(e);return Object.keys(e).length===0;};
   const handleSave=()=>{if(validate()){setSaved(true);setTimeout(()=>setSaved(false),3000);}};
 
-  return(<div style={{display:"flex",minHeight:"100%",fontFamily:"var(--font-body)"}}>
-    <Sidebar active="volunteers"/>
-    <div style={{flex:1,display:"flex",flexDirection:"column",minWidth:0}}>
-      <Topbar breadcrumb={["Volunteers","All Volunteers","Patricia Kelley"]} actions={editing?<><Button variant="secondary" size="sm" icon={<I.Undo/>} onClick={()=>setEditing(false)}>Cancel</Button><Button variant="primary" size="sm" icon={<I.Save/>} onClick={handleSave}>Save Changes</Button></>:<><Button variant="secondary" size="sm" icon={<I.Mail/>}>Email</Button><Button variant="primary" size="sm" icon={<I.Edit/>} onClick={()=>setEditing(true)}>Edit</Button></>}/>
-      <div style={{flex:1,padding:"24px",background:"#FAFAFA",overflow:"auto"}}>
-        {saved&&<div role="alert" style={{background:"#16A34A",color:"#fff",padding:"12px 20px",borderRadius:"var(--radius-lg)",marginBottom:"16px",display:"flex",alignItems:"center",gap:"10px",fontSize:"0.875rem",fontWeight:600,boxShadow:"var(--shadow-md)"}}><I.Check/> Volunteer record saved successfully</div>}
-        {editing&&<div role="status" style={{background:"#FFF7ED",border:"1.5px solid #FED7AA",padding:"10px 20px",borderRadius:"var(--radius-lg)",marginBottom:"16px",display:"flex",alignItems:"center",gap:"10px",fontSize:"0.8125rem",fontWeight:500,color:"#9A3412"}}><I.Edit/> You are editing this record. Save or cancel when done.</div>}
-        <div style={{display:"flex",gap:"24px",flexWrap:"wrap",alignItems:"flex-start"}}>
-          {/* Profile card */}
-          <div style={{width:280,background:"#fff",borderRadius:"var(--radius-2xl)",border:"1px solid #E5E5E5",overflow:"hidden",flexShrink:0,boxShadow:"var(--shadow-sm)"}}>
-            <div style={{height:80,background:"linear-gradient(135deg,#FB923C 0%,#EA580C 100%)",position:"relative"}}>{editing&&<button aria-label="Change photo" style={{position:"absolute",bottom:-16,right:16,width:32,height:32,borderRadius:"50%",background:"#fff",border:"2px solid #E5E5E5",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",color:"#525252",boxShadow:"var(--shadow-md)",zIndex:2}}><I.Camera/></button>}</div>
-            <div style={{padding:"0 24px 24px",marginTop:-40,textAlign:"center"}}>
-              <div style={{width:80,height:80,borderRadius:"50%",background:"linear-gradient(135deg,#FDBA74,#F97316)",margin:"0 auto 14px",display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:"1.5rem",fontWeight:800,fontFamily:"var(--font-display)",border:"4px solid #fff",boxShadow:"var(--shadow-md)",position:"relative",zIndex:1}}>PK</div>
-              <h2 style={{fontFamily:"var(--font-display)",fontSize:"1.25rem",fontWeight:700,color:"#171717",letterSpacing:"-0.02em"}}>Patricia Kelley</h2>
-              <p style={{fontSize:"0.8125rem",color:"#737373",marginTop:"3px"}}>Lincoln Elementary</p>
-              <div style={{marginTop:"12px",display:"flex",justifyContent:"center",gap:"8px",flexWrap:"wrap"}}><Badge variant="success"><I.Check/> Approved</Badge><Badge variant="info"><I.Shield/> Cleared</Badge></div>
-            </div>
-            <div style={{borderTop:"1px solid #E5E5E5",display:"flex"}}>{[{v:"24h",l:"Total Hours"},{v:"6",l:"Events"},{v:"Apr 3",l:"Last Visit"}].map((s,i)=>(<div key={i} style={{flex:1,padding:"14px 8px",textAlign:"center",borderRight:i<2?"1px solid #E5E5E5":"none"}}><span style={{display:"block",fontFamily:"var(--font-display)",fontSize:"1rem",fontWeight:700,color:"#171717"}}>{s.v}</span><span style={{fontSize:"0.6875rem",color:"#737373"}}>{s.l}</span></div>))}</div>
+  return(<div style={{display:"flex",flexDirection:"column",minHeight:"100%",fontFamily:"var(--font-body)"}}>
+    <AppNav active="volunteers" onNav={onNav}/>
+    <BreadcrumbBar items={["Volunteers","All Volunteers","Patricia Kelley"]} actions={editing?<><Button variant="secondary" size="sm" icon={<I.Undo/>} onClick={()=>setEditing(false)}>Cancel</Button><Button variant="primary" size="sm" icon={<I.Save/>} onClick={handleSave}>Save Changes</Button></>:<><Button variant="secondary" size="sm" icon={<I.Mail/>}>Email</Button><Button variant="primary" size="sm" icon={<I.Edit/>} onClick={()=>setEditing(true)}>Edit</Button></>}/>
+    <div style={{flex:1,padding:"24px",background:"#FAFAFA",overflow:"auto"}}>
+      {saved&&<div role="alert" style={{background:"#16A34A",color:"#fff",padding:"12px 20px",borderRadius:"var(--radius-lg)",marginBottom:"16px",display:"flex",alignItems:"center",gap:"10px",fontSize:"0.875rem",fontWeight:600,boxShadow:"var(--shadow-md)"}}><I.Check/> Volunteer record saved successfully</div>}
+      {editing&&<div role="status" style={{background:"#FFF7ED",border:"1.5px solid #FED7AA",padding:"10px 20px",borderRadius:"var(--radius-lg)",marginBottom:"16px",display:"flex",alignItems:"center",gap:"10px",fontSize:"0.8125rem",fontWeight:500,color:"#9A3412"}}><I.Edit/> You are editing this record. Save or cancel when done.</div>}
+      <div style={{display:"flex",gap:"24px",flexWrap:"wrap",alignItems:"flex-start"}}>
+        {/* Profile card */}
+        <div style={{width:280,background:"#fff",borderRadius:"var(--radius-2xl)",border:"none",overflow:"hidden",flexShrink:0,boxShadow:"var(--shadow-card)"}}>
+          <div style={{height:80,background:"linear-gradient(135deg,#FB923C 0%,#EA580C 100%)",position:"relative"}}>{editing&&<button aria-label="Change photo" style={{position:"absolute",bottom:-16,right:16,width:32,height:32,borderRadius:"50%",background:"#fff",border:"2px solid #E5E5E5",display:"flex",alignItems:"center",justifyContent:"center",cursor:"pointer",color:"#525252",boxShadow:"var(--shadow-md)",zIndex:2}}><I.Camera/></button>}</div>
+          <div style={{padding:"0 24px 24px",marginTop:-40,textAlign:"center"}}>
+            <div style={{width:80,height:80,borderRadius:"50%",background:"linear-gradient(135deg,#FDBA74,#F97316)",margin:"0 auto 14px",display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:"1.5rem",fontWeight:800,fontFamily:"var(--font-display)",border:"4px solid #fff",boxShadow:"var(--shadow-md)",position:"relative",zIndex:1}}>PK</div>
+            <h2 style={{fontFamily:"var(--font-display)",fontSize:"1.25rem",fontWeight:700,color:"var(--navy-deep)",letterSpacing:"-0.02em"}}>Patricia Kelley</h2>
+            <p style={{fontSize:"0.8125rem",color:"#737373",marginTop:"3px"}}>Lincoln Elementary</p>
+            <div style={{marginTop:"12px",display:"flex",justifyContent:"center",gap:"8px",flexWrap:"wrap"}}><Badge variant="success"><I.Check/> Approved</Badge><Badge variant="info"><I.Shield/> Cleared</Badge></div>
           </div>
-          {/* Form */}
-          <div style={{flex:1,minWidth:400,display:"flex",flexDirection:"column",gap:"20px"}}>
-            <fieldset style={{background:"#fff",borderRadius:"var(--radius-2xl)",border:"1px solid #E5E5E5",overflow:"hidden",boxShadow:"var(--shadow-sm)",margin:0,padding:0}}>
-              <legend style={{display:"none"}}>Personal Information</legend>
-              <div style={{padding:"16px 24px",borderBottom:"1px solid #E5E5E5",display:"flex",alignItems:"center",justifyContent:"space-between"}}><h3 style={{fontFamily:"var(--font-display)",fontSize:"1rem",fontWeight:700,color:"#171717"}}>Personal Information</h3>{!editing&&<button onClick={()=>setEditing(true)} style={{display:"flex",alignItems:"center",gap:"5px",color:"#F97316",fontSize:"0.8125rem",fontWeight:600,background:"none",border:"none",cursor:"pointer",fontFamily:"var(--font-body)"}}><I.Edit/> Edit</button>}</div>
-              <div style={{padding:"20px 24px",display:"flex",flexDirection:"column",gap:"16px"}}>
-                <div style={{display:"flex",gap:"16px",flexWrap:"wrap"}}><div style={{flex:1,minWidth:180}}><FormField label="Legal First Name" required value={form.firstName} error={errors.firstName} readOnly={!editing} onChange={e=>upd("firstName",e.target.value)}/></div><div style={{flex:1,minWidth:140}}><FormField label="Middle Name" value={form.middleName} readOnly={!editing} onChange={e=>upd("middleName",e.target.value)}/></div><div style={{flex:1,minWidth:180}}><FormField label="Legal Last Name" required value={form.lastName} error={errors.lastName} readOnly={!editing} onChange={e=>upd("lastName",e.target.value)}/></div></div>
-                <div style={{display:"flex",gap:"16px",flexWrap:"wrap"}}><div style={{flex:1,minWidth:140}}><FormField label="Date of Birth" required value={form.dob} error={errors.dob} readOnly={!editing} onChange={e=>upd("dob",e.target.value)}/></div><div style={{flex:1,minWidth:140}}><FormSelect label="Gender" value={form.gender} options={["Female","Male","Non-binary","Prefer not to say"]} disabled={!editing} onChange={e=>upd("gender",e.target.value)}/></div><div style={{flex:1,minWidth:140}}><FormSelect label="Affiliation" required value={form.affiliation} options={["Parent","Guardian","Community Member","Staff"]} disabled={!editing} onChange={e=>upd("affiliation",e.target.value)}/></div></div>
-                <div style={{display:"flex",gap:"16px",flexWrap:"wrap"}}><div style={{flex:1,minWidth:180}}><FormField label="Phone Number" required value={form.phone} error={errors.phone} readOnly={!editing} onChange={e=>upd("phone",e.target.value)}/></div><div style={{flex:1,minWidth:220}}><FormField label="Email" required type="email" value={form.email} error={errors.email} readOnly={!editing} onChange={e=>upd("email",e.target.value)}/></div></div>
-              </div>
-            </fieldset>
-            <fieldset style={{background:"#fff",borderRadius:"var(--radius-2xl)",border:"1px solid #E5E5E5",overflow:"hidden",boxShadow:"var(--shadow-sm)",margin:0,padding:0}}>
-              <legend style={{display:"none"}}>Address</legend>
-              <div style={{padding:"16px 24px",borderBottom:"1px solid #E5E5E5"}}><h3 style={{fontFamily:"var(--font-display)",fontSize:"1rem",fontWeight:700,color:"#171717"}}>Address</h3></div>
-              <div style={{padding:"20px 24px",display:"flex",flexDirection:"column",gap:"16px"}}>
-                <FormField label="Address Line 1" required value={form.address1} readOnly={!editing} onChange={e=>upd("address1",e.target.value)}/>
-                <FormField label="Address Line 2 / Apt / Suite" value={form.address2} readOnly={!editing} placeholder="Apartment, suite, etc." onChange={e=>upd("address2",e.target.value)}/>
-                <div style={{display:"flex",gap:"16px",flexWrap:"wrap"}}><div style={{flex:2,minWidth:160}}><FormField label="City" required value={form.city} readOnly={!editing} onChange={e=>upd("city",e.target.value)}/></div><div style={{flex:2,minWidth:140}}><FormSelect label="State" value={form.state} options={["Virginia","Maryland","DC","Other"]} disabled={!editing} onChange={e=>upd("state",e.target.value)}/></div><div style={{flex:1,minWidth:100}}><FormField label="Zip Code" required value={form.zip} readOnly={!editing} onChange={e=>upd("zip",e.target.value)}/></div></div>
-              </div>
-            </fieldset>
-            <div style={{background:"#fff",borderRadius:"var(--radius-2xl)",border:"1px solid #E5E5E5",overflow:"hidden",boxShadow:"var(--shadow-sm)"}}>
-              <div style={{padding:"16px 24px",borderBottom:"1px solid #E5E5E5",display:"flex",alignItems:"center",gap:"10px"}}><h3 style={{fontFamily:"var(--font-display)",fontSize:"1rem",fontWeight:700,color:"#171717"}}>Screening & Identification</h3><Badge variant="success"><I.Shield/> Cleared</Badge></div>
-              <div style={{padding:"20px 24px",display:"flex",flexDirection:"column",gap:"16px"}}>
-                <div style={{display:"flex",gap:"16px",flexWrap:"wrap"}}><div style={{flex:1,minWidth:180}}><FormSelect label="ID Type" value={form.idType} options={["Driver's License","Passport","State ID","Other"]} disabled={!editing} onChange={e=>upd("idType",e.target.value)}/></div><div style={{flex:1,minWidth:180}}><FormSelect label="Assigned Building" required value={form.building} options={["Lincoln Elementary","Washington Middle","Jefferson High"]} disabled={!editing} onChange={e=>upd("building",e.target.value)}/></div></div>
-                <div style={{padding:"16px",borderRadius:"var(--radius-lg)",background:"#F0FDF4",border:"1px solid #DCFCE7",display:"flex",alignItems:"flex-start",gap:"12px"}}><div style={{width:32,height:32,borderRadius:"50%",background:"#16A34A",display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",flexShrink:0}}><I.Shield/></div><div><span style={{display:"block",fontSize:"0.875rem",fontWeight:600,color:"#15803D"}}>Background Check Passed</span><span style={{fontSize:"0.8125rem",color:"#166534",marginTop:"2px",display:"block"}}>Criminal check cleared March 15, 2026. Sex offender registry: Clear. Next renewal: March 2027.</span></div></div>
-              </div>
+          <div style={{borderTop:"1px solid #F0F0F0",display:"flex"}}>{[{v:"24h",l:"Total Hours"},{v:"6",l:"Events"},{v:"Apr 3",l:"Last Visit"}].map((s,i)=>(<div key={i} style={{flex:1,padding:"14px 8px",textAlign:"center",borderRight:i<2?"1px solid #F0F0F0":"none"}}><span style={{display:"block",fontFamily:"var(--font-display)",fontSize:"1rem",fontWeight:700,color:"var(--navy-deep)"}}>{s.v}</span><span style={{fontSize:"0.6875rem",color:"#737373"}}>{s.l}</span></div>))}</div>
+        </div>
+        {/* Form */}
+        <div style={{flex:1,minWidth:400,display:"flex",flexDirection:"column",gap:"20px"}}>
+          <fieldset style={{background:"#fff",borderRadius:"var(--radius-2xl)",border:"none",overflow:"hidden",boxShadow:"var(--shadow-card)",margin:0,padding:0}}>
+            <legend style={{display:"none"}}>Personal Information</legend>
+            <div style={{padding:"16px 24px",borderBottom:"1px solid #F0F0F0",display:"flex",alignItems:"center",justifyContent:"space-between"}}><h3 style={{fontFamily:"var(--font-display)",fontSize:"1rem",fontWeight:700,color:"var(--navy-deep)"}}>Personal Information</h3>{!editing&&<button onClick={()=>setEditing(true)} style={{display:"flex",alignItems:"center",gap:"5px",color:"#F97316",fontSize:"0.8125rem",fontWeight:600,background:"none",border:"none",cursor:"pointer",fontFamily:"var(--font-body)"}}><I.Edit/> Edit</button>}</div>
+            <div style={{padding:"20px 24px",display:"flex",flexDirection:"column",gap:"16px"}}>
+              <div style={{display:"flex",gap:"16px",flexWrap:"wrap"}}><div style={{flex:1,minWidth:180}}><FormField label="Legal First Name" required value={form.firstName} error={errors.firstName} readOnly={!editing} onChange={e=>upd("firstName",e.target.value)}/></div><div style={{flex:1,minWidth:140}}><FormField label="Middle Name" value={form.middleName} readOnly={!editing} onChange={e=>upd("middleName",e.target.value)}/></div><div style={{flex:1,minWidth:180}}><FormField label="Legal Last Name" required value={form.lastName} error={errors.lastName} readOnly={!editing} onChange={e=>upd("lastName",e.target.value)}/></div></div>
+              <div style={{display:"flex",gap:"16px",flexWrap:"wrap"}}><div style={{flex:1,minWidth:140}}><FormField label="Date of Birth" required value={form.dob} error={errors.dob} readOnly={!editing} onChange={e=>upd("dob",e.target.value)}/></div><div style={{flex:1,minWidth:140}}><FormSelect label="Gender" value={form.gender} options={["Female","Male","Non-binary","Prefer not to say"]} disabled={!editing} onChange={e=>upd("gender",e.target.value)}/></div><div style={{flex:1,minWidth:140}}><FormSelect label="Affiliation" required value={form.affiliation} options={["Parent","Guardian","Community Member","Staff"]} disabled={!editing} onChange={e=>upd("affiliation",e.target.value)}/></div></div>
+              <div style={{display:"flex",gap:"16px",flexWrap:"wrap"}}><div style={{flex:1,minWidth:180}}><FormField label="Phone Number" required value={form.phone} error={errors.phone} readOnly={!editing} onChange={e=>upd("phone",e.target.value)}/></div><div style={{flex:1,minWidth:220}}><FormField label="Email" required type="email" value={form.email} error={errors.email} readOnly={!editing} onChange={e=>upd("email",e.target.value)}/></div></div>
             </div>
-            {/* Visit History */}
-            <div style={{background:"#fff",borderRadius:"var(--radius-2xl)",border:"1px solid #E5E5E5",overflow:"hidden",boxShadow:"var(--shadow-sm)"}}>
-              <div style={{padding:"16px 24px",borderBottom:"1px solid #E5E5E5",display:"flex",justifyContent:"space-between",alignItems:"center"}}><h3 style={{fontFamily:"var(--font-display)",fontSize:"1rem",fontWeight:700,color:"#171717"}}>Visit History</h3><Button variant="ghost" size="sm" icon={<I.Chart/>}>Export</Button></div>
-              <div style={{overflowX:"auto"}}><table style={{width:"100%",borderCollapse:"collapse",fontSize:"0.8125rem"}} role="table"><thead><tr>{["Date","Sign In","Sign Out","Duration","Building","Function"].map(h=><th key={h} scope="col" style={{padding:"11px 16px",textAlign:"left",fontWeight:600,color:"#737373",fontSize:"0.75rem",textTransform:"uppercase",letterSpacing:"0.05em",background:"#FAFAFA",borderBottom:"1px solid #E5E5E5"}}>{h}</th>)}</tr></thead><tbody>
-                {[{d:"Apr 3, 2026",i:"8:15 AM",o:"11:30 AM",dur:"3h 15m",b:"Lincoln Elementary",fn:"Library",fc:"teal"},{d:"Mar 28, 2026",i:"9:00 AM",o:"12:00 PM",dur:"3h 0m",b:"Lincoln Elementary",fn:"Classroom Aide",fc:"navy"},{d:"Mar 21, 2026",i:"8:00 AM",o:"2:30 PM",dur:"6h 30m",b:"Lincoln Elementary",fn:"Book Fair",fc:"primary"},{d:"Mar 14, 2026",i:"10:00 AM",o:"1:00 PM",dur:"3h 0m",b:"Lincoln Elementary",fn:"Office Help",fc:"magenta"},{d:"Mar 7, 2026",i:"8:30 AM",o:"11:45 AM",dur:"3h 15m",b:"Lincoln Elementary",fn:"Cafeteria",fc:"warning"}].map((v,i)=>(
-                  <tr key={i} style={{borderBottom:"1px solid #F5F5F5"}}><td style={{padding:"12px 16px",fontWeight:500,color:"#171717"}}>{v.d}</td><td style={{padding:"12px 16px",color:"#525252",fontVariantNumeric:"tabular-nums"}}>{v.i}</td><td style={{padding:"12px 16px",color:"#525252",fontVariantNumeric:"tabular-nums"}}>{v.o}</td><td style={{padding:"12px 16px"}}><Badge variant="navy" size="sm">{v.dur}</Badge></td><td style={{padding:"12px 16px",color:"#525252"}}>{v.b}</td><td style={{padding:"12px 16px"}}><Badge variant={v.fc} size="sm">{v.fn}</Badge></td></tr>
-                ))}
-              </tbody></table></div>
-              <div style={{padding:"12px 16px",borderTop:"1px solid #E5E5E5",display:"flex",justifyContent:"space-between",alignItems:"center",fontSize:"0.8125rem",color:"#737373"}}><span>Showing 5 of 24 visits</span><div style={{display:"flex",gap:"4px"}} role="navigation" aria-label="Pagination">{[1,2,3,"...",5].map((p,i)=>(<button key={i} aria-label={typeof p==="number"?`Page ${p}`:"More"} aria-current={p===1?"page":undefined} style={{width:32,height:32,borderRadius:"var(--radius-md)",border:p===1?"none":"1px solid #E5E5E5",background:p===1?"#F97316":"#fff",color:p===1?"#fff":"#525252",fontSize:"0.8125rem",fontWeight:p===1?700:400,cursor:"pointer",fontFamily:"var(--font-body)",display:"flex",alignItems:"center",justifyContent:"center"}}>{p}</button>))}</div></div>
+          </fieldset>
+          <fieldset style={{background:"#fff",borderRadius:"var(--radius-2xl)",border:"none",overflow:"hidden",boxShadow:"var(--shadow-card)",margin:0,padding:0}}>
+            <legend style={{display:"none"}}>Address</legend>
+            <div style={{padding:"16px 24px",borderBottom:"1px solid #F0F0F0"}}><h3 style={{fontFamily:"var(--font-display)",fontSize:"1rem",fontWeight:700,color:"var(--navy-deep)"}}>Address</h3></div>
+            <div style={{padding:"20px 24px",display:"flex",flexDirection:"column",gap:"16px"}}>
+              <FormField label="Address Line 1" required value={form.address1} readOnly={!editing} onChange={e=>upd("address1",e.target.value)}/>
+              <FormField label="Address Line 2 / Apt / Suite" value={form.address2} readOnly={!editing} placeholder="Apartment, suite, etc." onChange={e=>upd("address2",e.target.value)}/>
+              <div style={{display:"flex",gap:"16px",flexWrap:"wrap"}}><div style={{flex:2,minWidth:160}}><FormField label="City" required value={form.city} readOnly={!editing} onChange={e=>upd("city",e.target.value)}/></div><div style={{flex:2,minWidth:140}}><FormSelect label="State" value={form.state} options={["Virginia","Maryland","DC","Other"]} disabled={!editing} onChange={e=>upd("state",e.target.value)}/></div><div style={{flex:1,minWidth:100}}><FormField label="Zip Code" required value={form.zip} readOnly={!editing} onChange={e=>upd("zip",e.target.value)}/></div></div>
             </div>
+          </fieldset>
+          <div style={{background:"#fff",borderRadius:"var(--radius-2xl)",border:"none",overflow:"hidden",boxShadow:"var(--shadow-card)"}}>
+            <div style={{padding:"16px 24px",borderBottom:"1px solid #F0F0F0",display:"flex",alignItems:"center",gap:"10px"}}><h3 style={{fontFamily:"var(--font-display)",fontSize:"1rem",fontWeight:700,color:"var(--navy-deep)"}}>Screening & Identification</h3><Badge variant="success"><I.Shield/> Cleared</Badge></div>
+            <div style={{padding:"20px 24px",display:"flex",flexDirection:"column",gap:"16px"}}>
+              <div style={{display:"flex",gap:"16px",flexWrap:"wrap"}}><div style={{flex:1,minWidth:180}}><FormSelect label="ID Type" value={form.idType} options={["Driver's License","Passport","State ID","Other"]} disabled={!editing} onChange={e=>upd("idType",e.target.value)}/></div><div style={{flex:1,minWidth:180}}><FormSelect label="Assigned Building" required value={form.building} options={["Lincoln Elementary","Washington Middle","Jefferson High"]} disabled={!editing} onChange={e=>upd("building",e.target.value)}/></div></div>
+              <div style={{padding:"16px",borderRadius:"var(--radius-lg)",background:"#F0FDF4",border:"none",boxShadow:"0 2px 8px rgba(22,163,74,0.08)",display:"flex",alignItems:"flex-start",gap:"12px"}}><div style={{width:32,height:32,borderRadius:"50%",background:"#16A34A",display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",flexShrink:0}}><I.Shield/></div><div><span style={{display:"block",fontSize:"0.875rem",fontWeight:600,color:"#15803D"}}>Background Check Passed</span><span style={{fontSize:"0.8125rem",color:"#166534",marginTop:"2px",display:"block"}}>Criminal check cleared March 15, 2026. Sex offender registry: Clear. Next renewal: March 2027.</span></div></div>
+            </div>
+          </div>
+          {/* Visit History */}
+          <div style={{background:"#fff",borderRadius:"var(--radius-2xl)",border:"none",overflow:"hidden",boxShadow:"var(--shadow-card)"}}>
+            <div style={{padding:"16px 24px",borderBottom:"1px solid #F0F0F0",display:"flex",justifyContent:"space-between",alignItems:"center"}}><h3 style={{fontFamily:"var(--font-display)",fontSize:"1rem",fontWeight:700,color:"var(--navy-deep)"}}>Visit History</h3><Button variant="ghost" size="sm" icon={<I.Chart/>}>Export</Button></div>
+            <div style={{overflowX:"auto"}}><table style={{width:"100%",borderCollapse:"collapse",fontSize:"0.8125rem"}} role="table"><thead><tr>{["Date","Sign In","Sign Out","Duration","Building","Function"].map(h=><th key={h} scope="col" style={{padding:"11px 16px",textAlign:"left",fontWeight:600,color:"#737373",fontSize:"0.75rem",textTransform:"uppercase",letterSpacing:"0.05em",background:"transparent",borderBottom:"1px solid #F0F0F0"}}>{h}</th>)}</tr></thead><tbody>
+              {[{d:"Apr 3, 2026",i:"8:15 AM",o:"11:30 AM",dur:"3h 15m",b:"Lincoln Elementary",fn:"Library",fc:"teal"},{d:"Mar 28, 2026",i:"9:00 AM",o:"12:00 PM",dur:"3h 0m",b:"Lincoln Elementary",fn:"Classroom Aide",fc:"navy"},{d:"Mar 21, 2026",i:"8:00 AM",o:"2:30 PM",dur:"6h 30m",b:"Lincoln Elementary",fn:"Book Fair",fc:"primary"},{d:"Mar 14, 2026",i:"10:00 AM",o:"1:00 PM",dur:"3h 0m",b:"Lincoln Elementary",fn:"Office Help",fc:"magenta"},{d:"Mar 7, 2026",i:"8:30 AM",o:"11:45 AM",dur:"3h 15m",b:"Lincoln Elementary",fn:"Cafeteria",fc:"warning"}].map((v,i)=>(
+                <tr key={i} style={{borderBottom:"1px solid #F5F5F5"}}><td style={{padding:"12px 16px",fontWeight:500,color:"var(--navy-deep)"}}>{v.d}</td><td style={{padding:"12px 16px",color:"#525252",fontVariantNumeric:"tabular-nums"}}>{v.i}</td><td style={{padding:"12px 16px",color:"#525252",fontVariantNumeric:"tabular-nums"}}>{v.o}</td><td style={{padding:"12px 16px"}}><Badge variant="navy" size="sm">{v.dur}</Badge></td><td style={{padding:"12px 16px",color:"#525252"}}>{v.b}</td><td style={{padding:"12px 16px"}}><Badge variant={v.fc} size="sm">{v.fn}</Badge></td></tr>
+              ))}
+            </tbody></table></div>
+            <div style={{padding:"12px 16px",borderTop:"1px solid #F0F0F0",display:"flex",justifyContent:"space-between",alignItems:"center",fontSize:"0.8125rem",color:"#737373"}}><span>Showing 5 of 24 visits</span><div style={{display:"flex",gap:"4px"}} role="navigation" aria-label="Pagination">{[1,2,3,"...",5].map((p,i)=>(<button key={i} aria-label={typeof p==="number"?`Page ${p}`:"More"} aria-current={p===1?"page":undefined} style={{width:32,height:32,borderRadius:"var(--radius-md)",border:"none",background:p===1?"#F97316":"#F0F0F0",color:p===1?"#fff":"#525252",fontSize:"0.8125rem",fontWeight:p===1?700:400,cursor:"pointer",fontFamily:"var(--font-body)",display:"flex",alignItems:"center",justifyContent:"center"}}>{p}</button>))}</div></div>
           </div>
         </div>
       </div>
@@ -259,24 +285,21 @@ const VolunteerEditView=()=>{
 };
 
 /* ─── DASHBOARD VIEW ───────────────────────────────────────── */
-const DashboardView=()=>{
+const DashboardView=({onNav})=>{
   const volunteers=[{name:"Patricia Kelley",status:"approved",school:"Lincoln Elementary",hours:24,lastVisit:"Apr 3"},{name:"James Morton",status:"pending",school:"Washington Middle",hours:0,lastVisit:"—"},{name:"Sarah Chen",status:"approved",school:"Lincoln Elementary",hours:12,lastVisit:"Apr 1"},{name:"David Okafor",status:"denied",school:"Jefferson High",hours:0,lastVisit:"—"},{name:"Maria Thompson",status:"approved",school:"Lincoln Elementary",hours:48,lastVisit:"Apr 4"},{name:"Robert Kim",status:"expiring",school:"Washington Middle",hours:8,lastVisit:"Mar 28"}];
   const sm={approved:"success",pending:"primary",denied:"danger",expiring:"warning"};
-  return(<div style={{display:"flex",minHeight:"100%",fontFamily:"var(--font-body)"}}>
-    <Sidebar active="dashboard"/>
-    <div style={{flex:1,display:"flex",flexDirection:"column",minWidth:0}}>
-      <Topbar breadcrumb={["Volunteer Management","Dashboard"]} actions={<div style={{display:"flex",alignItems:"center",gap:"12px"}}><div style={{position:"relative"}}><select aria-label="Building filter" style={{padding:"7px 32px 7px 12px",borderRadius:"var(--radius-md)",border:"1.5px solid #D4D4D4",fontSize:"0.8125rem",fontFamily:"var(--font-body)",appearance:"none",cursor:"pointer",background:"#fff",fontWeight:500}}><option>All Buildings</option><option>Lincoln Elementary</option></select><div style={{position:"absolute",right:10,top:"50%",transform:"translateY(-50%)",pointerEvents:"none",color:"#737373"}}><I.ChevDown/></div></div><button aria-label="Notifications" style={{position:"relative",cursor:"pointer",color:"#525252",background:"none",border:"none",padding:"4px"}}><I.Bell/><div style={{position:"absolute",top:0,right:0,width:9,height:9,borderRadius:"50%",background:"#DC2626",border:"2px solid #fff"}}/></button><div style={{width:34,height:34,borderRadius:"50%",background:"linear-gradient(135deg,#FB923C,#EA580C)",display:"flex",alignItems:"center",justifyContent:"center",color:"#fff",fontSize:"0.8125rem",fontWeight:700,fontFamily:"var(--font-display)",cursor:"pointer"}}>CL</div></div>}/>
-      <main style={{flex:1,padding:"24px",background:"#FAFAFA",overflow:"auto"}}>
-        <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"24px"}}><div><h1 style={{fontFamily:"var(--font-display)",fontSize:"1.5rem",fontWeight:800,color:"#171717",letterSpacing:"-0.03em"}}>Dashboard</h1><p style={{fontSize:"0.875rem",color:"#737373",marginTop:"2px"}}>Broward County School District</p></div><Button variant="primary" icon={<I.Plus/>}>Add Volunteer</Button></div>
-        <div style={{display:"flex",gap:"14px",marginBottom:"24px",flexWrap:"wrap"}}><StatCard label="Currently Signed In" value="26" change={12} icon={<I.Users/>} accent="#F97316"/><StatCard label="Hours This Week" value="143" icon={<I.Clock/>} accent="#2563EB"/><StatCard label="Hours This Month" value="853" change={8} icon={<I.Chart/>} accent="#16A34A"/><StatCard label="Pending Approval" value="15" icon={<I.Clipboard/>} accent="#DC2626"/></div>
-        <div style={{background:"#fff",borderRadius:"var(--radius-2xl)",border:"1px solid #E5E5E5",overflow:"hidden",boxShadow:"var(--shadow-sm)"}}>
-          <div style={{padding:"16px 20px",borderBottom:"1px solid #E5E5E5",display:"flex",justifyContent:"space-between",alignItems:"center"}}><h2 style={{fontFamily:"var(--font-display)",fontSize:"1rem",fontWeight:700,color:"#171717"}}>Recent Volunteers</h2><Button variant="ghost" size="sm">View All</Button></div>
-          <table style={{width:"100%",borderCollapse:"collapse",fontSize:"0.8125rem"}} role="table"><thead><tr>{["Volunteer","Status","School","Hours","Last Visit",""].map(h=><th key={h} scope="col" style={{padding:"11px 16px",textAlign:"left",fontWeight:600,color:"#737373",fontSize:"0.75rem",textTransform:"uppercase",letterSpacing:"0.05em",background:"#FAFAFA",borderBottom:"1px solid #E5E5E5"}}>{h}</th>)}</tr></thead><tbody>
-            {volunteers.map((v,i)=>(<tr key={i} style={{borderBottom:"1px solid #F5F5F5"}}><td style={{padding:"12px 16px"}}><div style={{display:"flex",alignItems:"center",gap:"10px"}}><div style={{width:34,height:34,borderRadius:"50%",background:`hsl(${i*55+20},50%,80%)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"0.75rem",fontWeight:700,color:`hsl(${i*55+20},50%,30%)`,fontFamily:"var(--font-display)"}}>{v.name.split(" ").map(n=>n[0]).join("")}</div><span style={{fontWeight:600,color:"#171717"}}>{v.name}</span></div></td><td style={{padding:"12px 16px"}}><Badge variant={sm[v.status]} size="sm">{v.status==="approved"&&<I.Check/>}{v.status}</Badge></td><td style={{padding:"12px 16px",color:"#525252"}}>{v.school}</td><td style={{padding:"12px 16px",fontVariantNumeric:"tabular-nums",fontWeight:600,color:"#171717"}}>{v.hours}h</td><td style={{padding:"12px 16px",color:"#737373"}}>{v.lastVisit}</td><td style={{padding:"12px 16px"}}><div style={{display:"flex",gap:"4px"}}><button aria-label={`View ${v.name}`} style={{padding:"5px 8px",borderRadius:"var(--radius-md)",border:"1px solid #E5E5E5",background:"#fff",cursor:"pointer",color:"#525252",display:"flex",alignItems:"center"}}><I.Eye/></button><button aria-label={`Edit ${v.name}`} style={{padding:"5px 8px",borderRadius:"var(--radius-md)",border:"1px solid #E5E5E5",background:"#fff",cursor:"pointer",color:"#525252",display:"flex",alignItems:"center"}}><I.Edit/></button></div></td></tr>))}
-          </tbody></table>
-        </div>
-      </main>
-    </div>
+  return(<div style={{display:"flex",flexDirection:"column",minHeight:"100%",fontFamily:"var(--font-body)"}}>
+    <AppNav active="dashboard" onNav={onNav}/>
+    <main style={{flex:1,padding:"24px 24px 24px",background:"#FAFAFA",overflow:"auto"}}>
+      <div style={{display:"flex",justifyContent:"space-between",alignItems:"center",marginBottom:"24px"}}><div><h1 style={{fontFamily:"var(--font-display)",fontSize:"1.5rem",fontWeight:800,color:"var(--navy-deep)",letterSpacing:"-0.03em"}}>Dashboard</h1><p style={{fontSize:"0.875rem",color:"#737373",marginTop:"2px"}}>Broward County School District</p></div><Button variant="primary" icon={<I.Plus/>}>Add Volunteer</Button></div>
+      <div style={{display:"flex",gap:"14px",marginBottom:"24px",flexWrap:"wrap"}}><StatCard label="Currently Signed In" value="26" change={12} icon={<I.Users/>} accent="#F97316"/><StatCard label="Hours This Week" value="143" icon={<I.Clock/>} accent="#2563EB"/><StatCard label="Hours This Month" value="853" change={8} icon={<I.Chart/>} accent="#16A34A"/><StatCard label="Pending Approval" value="15" icon={<I.Clipboard/>} accent="#DC2626"/></div>
+      <div style={{background:"#fff",borderRadius:"var(--radius-2xl)",border:"none",overflow:"hidden",boxShadow:"var(--shadow-card)"}}>
+        <div style={{padding:"16px 20px",borderBottom:"1px solid #F0F0F0",display:"flex",justifyContent:"space-between",alignItems:"center"}}><h2 style={{fontFamily:"var(--font-display)",fontSize:"1rem",fontWeight:700,color:"var(--navy-deep)"}}>Recent Volunteers</h2><Button variant="ghost" size="sm">View All</Button></div>
+        <table style={{width:"100%",borderCollapse:"collapse",fontSize:"0.8125rem"}} role="table"><thead><tr>{["Volunteer","Status","School","Hours","Last Visit",""].map(h=><th key={h} scope="col" style={{padding:"11px 16px",textAlign:"left",fontWeight:600,color:"#737373",fontSize:"0.75rem",textTransform:"uppercase",letterSpacing:"0.05em",background:"transparent",borderBottom:"1px solid #F0F0F0"}}>{h}</th>)}</tr></thead><tbody>
+          {volunteers.map((v,i)=>(<tr key={i} style={{borderBottom:"1px solid #F5F5F5"}}><td style={{padding:"12px 16px"}}><div style={{display:"flex",alignItems:"center",gap:"10px"}}><div style={{width:34,height:34,borderRadius:"50%",background:`hsl(${i*55+20},50%,80%)`,display:"flex",alignItems:"center",justifyContent:"center",fontSize:"0.75rem",fontWeight:700,color:`hsl(${i*55+20},50%,30%)`,fontFamily:"var(--font-display)"}}>{v.name.split(" ").map(n=>n[0]).join("")}</div><span style={{fontWeight:600,color:"var(--navy-deep)"}}>{v.name}</span></div></td><td style={{padding:"12px 16px"}}><Badge variant={sm[v.status]} size="sm">{v.status==="approved"&&<I.Check/>}{v.status}</Badge></td><td style={{padding:"12px 16px",color:"#525252"}}>{v.school}</td><td style={{padding:"12px 16px",fontVariantNumeric:"tabular-nums",fontWeight:600,color:"var(--navy-deep)"}}>{v.hours}h</td><td style={{padding:"12px 16px",color:"#737373"}}>{v.lastVisit}</td><td style={{padding:"12px 16px"}}><div style={{display:"flex",gap:"4px"}}><button aria-label={`View ${v.name}`} style={{padding:"6px 8px",borderRadius:"var(--radius-sm)",border:"none",background:"#F0F0F0",cursor:"pointer",color:"#525252",display:"flex",alignItems:"center"}}><I.Eye/></button><button aria-label={`Edit ${v.name}`} style={{padding:"6px 8px",borderRadius:"var(--radius-sm)",border:"none",background:"#F0F0F0",cursor:"pointer",color:"#525252",display:"flex",alignItems:"center"}}><I.Edit/></button></div></td></tr>))}
+        </tbody></table>
+      </div>
+    </main>
   </div>);
 };
 
@@ -285,18 +308,25 @@ function App(){
   const[view,setView]=useState("tokens");
   const views=[{id:"tokens",label:"Tokens & States"},{id:"dashboard",label:"Dashboard"},{id:"edit",label:"Volunteer Edit"}];
   return(<div style={{fontFamily:"var(--font-body)",background:"#FAFAFA",minHeight:"100vh",display:"flex",flexDirection:"column"}}>
-    <header style={{background:"#171717",padding:"10px 24px",display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0,borderBottom:"1px solid rgba(255,255,255,0.06)"}}>
+    <header style={{background:"#fff",padding:"8px 24px",display:"flex",alignItems:"center",justifyContent:"space-between",flexShrink:0,borderBottom:"2px solid #F97316",boxShadow:"0 2px 8px rgba(0,0,0,0.04)"}}>
       <div style={{display:"flex",alignItems:"center",gap:"16px"}}>
-        <div><span style={{fontFamily:"var(--font-display)",fontSize:"1rem",fontWeight:800,color:"#F97316",letterSpacing:"-0.03em"}}>RAPTOR</span><span style={{fontSize:"0.5rem",color:"rgba(255,255,255,0.3)",display:"block",letterSpacing:"0.1em",fontWeight:500,textTransform:"uppercase"}}>Design System v1.1</span></div>
-        <div style={{height:24,width:1,background:"rgba(255,255,255,0.1)"}}/>
-        <nav style={{display:"flex",gap:"2px"}} role="tablist">{views.map(v=>(<button key={v.id} role="tab" aria-selected={view===v.id} onClick={()=>setView(v.id)} style={{padding:"7px 16px",borderRadius:"var(--radius-lg)",border:"none",background:view===v.id?"rgba(249,115,22,0.15)":"transparent",color:view===v.id?"#FB923C":"rgba(255,255,255,0.4)",fontSize:"0.8125rem",fontWeight:view===v.id?600:400,cursor:"pointer",fontFamily:"var(--font-body)",transition:"all var(--transition)"}}>{v.label}</button>))}</nav>
+        <div style={{display:"flex",alignItems:"center",gap:"10px"}}>
+          <div style={{width:32,height:32,borderRadius:"50%",background:"#F97316",display:"flex",alignItems:"center",justifyContent:"center"}}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><polyline points="13 17 18 12 13 7"/><polyline points="6 17 11 12 6 7"/></svg>
+          </div>
+          <div><span style={{fontFamily:"var(--font-display)",fontSize:"1rem",fontWeight:800,color:"var(--navy-deep)",letterSpacing:"-0.03em"}}>RAPTOR</span><span style={{fontSize:"0.5rem",color:"#737373",display:"block",letterSpacing:"0.1em",fontWeight:500,textTransform:"uppercase"}}>Design System v1.2</span></div>
+        </div>
+        <div style={{height:24,width:1,background:"#E5E5E5"}}/>
+        <nav style={{display:"flex",gap:"0"}} role="tablist">{views.map(v=>(<button key={v.id} role="tab" aria-selected={view===v.id} onClick={()=>setView(v.id)} style={{padding:"8px 18px 10px",border:"none",background:"transparent",
+          color:view===v.id?"#F97316":"#737373",fontSize:"0.8125rem",fontWeight:view===v.id?600:500,
+          cursor:"pointer",fontFamily:"var(--font-body)",transition:"all var(--transition)",
+          borderBottom:view===v.id?"2.5px solid #F97316":"2.5px solid transparent",marginBottom:"-10px"}}>{v.label}</button>))}</nav>
       </div>
-      <div style={{display:"flex",alignItems:"center",gap:"8px"}}><Badge variant="primary">React</Badge><Badge variant="info">WCAG AA</Badge><Badge variant="teal">Token-Based</Badge></div>
     </header>
     <div style={{flex:1,overflow:"auto"}}>
-      {view==="tokens"&&<div style={{maxWidth:900,margin:"0 auto",padding:"32px 24px"}}><h1 style={{fontFamily:"var(--font-display)",fontSize:"1.75rem",fontWeight:800,color:"#171717",letterSpacing:"-0.03em",marginBottom:"6px"}}>Tokens, Badges & Interactive States</h1><p style={{fontSize:"0.9375rem",color:"#737373",marginBottom:"32px",lineHeight:1.6}}>Foundational visual language with WCAG AA compliance. Bold badge styling matches SmartPass patterns — saturated backgrounds with white text. All interactive elements include visible focus indicators, error states, and disabled treatments.</p><TokensView/></div>}
-      {view==="dashboard"&&<DashboardView/>}
-      {view==="edit"&&<VolunteerEditView/>}
+      {view==="tokens"&&<div style={{maxWidth:900,margin:"0 auto",padding:"32px 24px"}}><h1 style={{fontFamily:"var(--font-display)",fontSize:"1.75rem",fontWeight:800,color:"var(--navy-deep)",letterSpacing:"-0.03em",marginBottom:"6px"}}>Tokens, Badges & Interactive States</h1><p style={{fontSize:"0.9375rem",color:"#737373",marginBottom:"32px",lineHeight:1.6}}>Foundational visual language with WCAG AA compliance. Bold badge styling matches SmartPass patterns — saturated backgrounds with white text. All interactive elements include visible focus indicators, error states, and disabled treatments.</p><TokensView/></div>}
+      {view==="dashboard"&&<DashboardView onNav={(id)=>{if(id==="volunteers")setView("edit");}}/>}
+      {view==="edit"&&<VolunteerEditView onNav={(id)=>{if(id==="dashboard")setView("dashboard");}}/>}
     </div>
   </div>);
 }
